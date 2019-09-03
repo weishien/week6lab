@@ -58,10 +58,8 @@ app.get('/newTask', function(req,res) {
 // listen to action '/incomingTask'
 // catch data input by clients and return static list task page
 app.post('/incomingTask', function(req,res) {
-    console.log(req.body);
-    db.push(req.body);
-    // console.log(db);
-    res.render(viewPaths + '/listTasks.html', { task : db });
+    col.insertOne(req.body);
+    res.redirect('/')
 });
 
 app.listen(8080);

@@ -11,10 +11,13 @@
         <p>
             <form action="incomingTask" method = "POST">
                 Task Name <input type="text" name = 'taskName' /> <br>
-                Assign To <input type="text" name = 'taskName' /> <br>
-                Due Date <input type="number" name = 'taskName' /> <br>
-                Task Status <input type="text" name = 'taskDue' /> <br>
-                Description <input type="text" name = 'taskDesc' /> <br>
+                Assign To <input type="text" name = 'assignTo' /> <br>
+                Due Date <input type="date" name = 'dueDate' /> <br>
+                Task Status <select name="taskStatus" id="">
+                    <option value="In Progress"> In Progress </option> 
+                    <option value="Complete"> Complete </option>
+                </select> <br>
+                Description <input type="text" name = 'description' /> <br>
                 <button>Submit</button>
             </form>
         </p>
