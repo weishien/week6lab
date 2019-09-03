@@ -52,8 +52,16 @@ app.get('/listTasks', function(req,res) {
 
 // check pathname and return static page with forms to take input from clients
 app.get('/newTask', function(req,res) {
-    res.sendFile(viewPaths + '/newTask.html')
+    res.sendFile(viewPaths + '/newTask.html');
 });
+
+app.get('/deleteTask', function(req,res) {
+    res.sendFile(viewPaths + '/deleteTask.html');
+});
+
+app.get('/deleteCompleted', function(req,res) {
+    res.sendFile(viewPaths + '/deleteCompleted.html');
+})
 
 // listen to action '/incomingTask'
 // catch data input by clients and return static list task page
@@ -61,5 +69,26 @@ app.post('/incomingTask', function(req,res) {
     col.insertOne(req.body);
     res.redirect('/')
 });
+
+
+// ?????????
+app.post('/deleteById', function(req,res) {
+    // check id and delete
+    // NEED ATTENTION!
+    console.log(req.body.id);
+    col.deleteOne({_id:{$eq: req.body.id }},function(err,obj) {
+        console.log(obj.result);
+    })
+    res.redirect('/listTasks');
+})
+
+// ??????????
+app.post('/removeDone', function(req,res) {
+    query = {taskStatus : { $eq : "Complete" }};
+    col.deleteMany({query}, function(err,obj) {
+        console.log(obj.result);
+    })
+    res.redirect('/listTasks');
+})
 
 app.listen(8080);
