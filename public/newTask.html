@@ -6,17 +6,19 @@
     <body>
         <h3>
             <a href="/">Home</a> <br>
-            <a href="/listTasks"> List Tasks</a>
+            <a href="/newTask"> Add New Task</a> <br>
+            <a href="/listTasks"> List Tasks</a> <br>
+            <a href="/update"> Update Task</a> <br>
+            <a href="/deleteTask"> Delete Task by Id</a> <br>
+            <a href="/deleteCompleted"> Delete Completed Tasks</a> <br>
         </h3>
+
         <p>
             <form action="incomingTask" method = "POST">
                 Task Name <input type="text" name = 'taskName' /> <br>
                 Assign To <input type="text" name = 'assignTo' /> <br>
                 Due Date <input type="date" name = 'dueDate' /> <br>
-                Task Status <select name="taskStatus" id="">
-                    <option value="In Progress"> In Progress </option> 
-                    <option value="Complete"> Complete </option>
-                </select> <br>
+                Task Status <input type="text" name = 'taskStatus' /> <br>
                 Description <input type="text" name = 'description' /> <br>
                 <button>Submit</button>
             </form>

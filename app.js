@@ -43,14 +43,14 @@ app.get('/', function(req,res) {
     res.sendFile(viewPaths + '/index.html');
 });
 
-// check pathname and return dynamic list tasks page
 app.get('/listTasks', function(req,res) {
-    res.render(viewPaths + '/listTasks.html', {
-        task : db 
-    })
+    col.find({}).toArray(function(err,data) {
+        res.render(viewPaths + '/listTasks.html', {
+            task : data
+        });
+    });
 });
 
-// check pathname and return static page with forms to take input from clients
 app.get('/newTask', function(req,res) {
     res.sendFile(viewPaths + '/newTask.html');
 });
@@ -63,7 +63,11 @@ app.get('/deleteCompleted', function(req,res) {
     res.sendFile(viewPaths + '/deleteCompleted.html');
 })
 
-// listen to action '/incomingTask'
+app.get('/update', function(req,res) {
+    res.sendFile(viewPaths + '/update.html');
+})
+
+// listen to action '/incomingTask' from newTask.html
 // catch data input by clients and return static list task page
 app.post('/incomingTask', function(req,res) {
     col.insertOne(req.body);
@@ -71,7 +75,8 @@ app.post('/incomingTask', function(req,res) {
 });
 
 
-// ?????????
+// listen to action '/deleteById' from deleteTask.html
+// delete data with equivalent ID from database
 app.post('/deleteById', function(req,res) {
     // check id and delete
     // NEED ATTENTION!
@@ -82,13 +87,26 @@ app.post('/deleteById', function(req,res) {
     res.redirect('/listTasks');
 })
 
-// ??????????
+// listen to action '/removeDone' from deleteCompleted.html
+// delete all completed tasks
 app.post('/removeDone', function(req,res) {
     query = {taskStatus : { $eq : "Complete" }};
     col.deleteMany({query}, function(err,obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');
-})
+});
+
+// listen to action '/updateTask' from update.html
+// find the id 
+// update the status
+app.post('/updateTask', function(req,res) {
+    query = {_id : {$eq: req.body.id}};
+    col.updateOne({query},{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, result) {
+        console.log(result);
+    })
+    res.redirect('/listTasks');
+});
+
 
 app.listen(8080);

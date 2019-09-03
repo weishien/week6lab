@@ -11,8 +11,12 @@
     <body>
 
         <h3>
-                <a href="/">Home</a> <br>
-                <a href="/newTask"> Add New Task</a>
+            <a href="/">Home</a> <br>
+            <a href="/newTask"> Add New Task</a> <br>
+            <a href="/listTasks"> List Tasks</a> <br>
+            <a href="/update"> Update Task</a> <br>
+            <a href="/deleteTask"> Delete Task by Id</a> <br>
+            <a href="/deleteCompleted"> Delete Completed Tasks</a> <br>
         </h3>
 
 
@@ -20,25 +24,43 @@
             <table>
                     <tr>
                         <th>
-                            Name
+                            Task Id
+                        </th>
+                        <th>
+                            Task Name
+                        </th>
+                        <th>
+                            Assign To
                         </th>
                         <th>
                             Due Date
                         </th>
                         <th>
-                            Description
+                            Task Status
+                        </th>
+                        <th>
+                            Task Description
                         </th>
                     </tr>
                     <% for (let i = 0; i < task.length; i++ ) { %>
                         <tr>
                             <td>
+                                <%= task[i]._id %>
+                            </td>
+                            <td>
                                 <%= task[i].taskName %>
                             </td>
                             <td>
-                                <%= task[i].taskDue %>
+                                <%= task[i].assignTo %>
                             </td>
                             <td>
-                                <%= task[i].taskDesc %>
+                                <%= task[i].dueDate %>
+                            </td>
+                            <td>
+                                <%= task[i].taskStatus %>
+                            </td>
+                            <td>
+                                <%= task[i].description %>
                             </td>
                         </tr>
                     <% } %>
