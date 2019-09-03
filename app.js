@@ -15,9 +15,9 @@ let url = 'mongodb://localhost:27017';
 mongoClient.connect(url,{useNewUrlParser:true , useUnifiedTopology:true },function(err,client) {
     db = client.db('w6lab');
     col = db.collection('tasks')
-    
-    // test case
-    col.insertOne({taskName:'FIT2095',assignTo:'Wei'});
+
+    // test 
+    // col.insertOne({taskName:'FIT2095',assignTo:'Wei'});
 })
 
 // initialise local path to access files from different folders
