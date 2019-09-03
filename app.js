@@ -1,9 +1,24 @@
 let express = require('express');
 // let bodyParser = require('body-parser');
 let ejs = require('ejs');
+let mongodb = require('mongodb');
+let mongoClient = mongodb.MongoClient;
 
 let app = express();
-let db = [];
+
+// declare global variable
+let db = null;
+let col = null;
+let url = 'mongodb://localhost:27017';
+
+// connect mongodb
+mongoClient.connect(url,{useNewUrlParser:true , useUnifiedTopology:true },function(err,client) {
+    db = client.db('w6lab');
+    col = db.collection('tasks')
+    
+    // test case
+    col.insertOne({taskName:'FIT2095',assignTo:'Wei'});
+})
 
 // initialise local path to access files from different folders
 let viewPaths = __dirname + '/public';
