@@ -8,11 +8,14 @@ let app = express();
 
 // declare global variable
 let db = null;
-let col = null;
-let url = 'mongodb://localhost:27017';
+let col = null; 
+// provide url dynamically to separate mongodb server from nodejs server
+let url = 'mongodb://' + process.argv[2] + ':27017/';
+console.log('Connecting to MongoDB Server = ' + url);
 
 // connect mongodb
 mongoClient.connect(url,{useNewUrlParser:true , useUnifiedTopology:true },function(err,client) {
+    console.log("Connected successfully to server");
     db = client.db('w6lab');
     col = db.collection('tasks')
 
@@ -81,7 +84,7 @@ app.post('/deleteById', function(req,res) {
     // check id and delete
     // NEED ATTENTION!
     console.log(req.body.id);
-    col.deleteOne({_id:{$eq: req.body.id }},function(err,obj) {
+    col.deleteOne({_id : mongodb.ObjectId(req.body.id)},function(err,obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');
@@ -101,7 +104,7 @@ app.post('/removeDone', function(req,res) {
 // find the id 
 // update the status
 app.post('/updateTask', function(req,res) {
-    query = {_id : {$eq: req.body.id}};
+    query = {_id : mongodb.ObjectId(req.body.id)};
     col.updateOne({query},{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, result) {
         console.log(result);
     })
