@@ -70,10 +70,24 @@ app.get('/update', function(req,res) {
     res.sendFile(viewPaths + '/update.html');
 })
 
+app.get('/insertMany', function(req,res) {
+    res.sendFile(viewPaths + '/insertMany.html');
+})
+
 // listen to action '/incomingTask' from newTask.html
 // catch data input by clients and return static list task page
 app.post('/incomingTask', function(req,res) {
-    col.insertOne(req.body);
+    let idRandom = Math.round(Math.random()*1000);
+    let newTask = {
+        id:parseInt(idRandom),
+        taskName:req.body.taskName,
+        assignTo:req.body.assignTo,
+        dueDate:req.body.dueDate,
+        taskStatus:req.body.taskStatus,
+        description:req.body.description
+    }
+    console.log(newTask)
+    col.insertOne(newTask);
     res.redirect('/')
 });
 
@@ -83,7 +97,7 @@ app.post('/incomingTask', function(req,res) {
 app.post('/deleteById', function(req,res) {
     // check id and delete
     console.log(req.body.id);
-    col.deleteOne({_id : mongodb.ObjectId(req.body.id)},function(err,obj) {
+    col.deleteOne({id : parseInt(req.body.id)},function(err,obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');
@@ -92,8 +106,9 @@ app.post('/deleteById', function(req,res) {
 // listen to action '/removeDone' from deleteCompleted.html
 // delete all completed tasks
 app.post('/removeDone', function(req,res) {
-    query = {taskStatus : { $eq : "Complete" }};
-    col.deleteMany({query}, function(err,obj) {
+    let query = {taskStatus : req.body.status };
+    console.log(query)
+    col.deleteMany(query, function(err,obj) {
         console.log(obj.result);
     })
     res.redirect('/listTasks');
@@ -103,13 +118,30 @@ app.post('/removeDone', function(req,res) {
 // find the id 
 // update the status
 app.post('/updateTask', function(req,res) {
-    query = {_id : mongodb.ObjectId(req.body.id)};
-    col.updateOne({query},{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, result) {
-        console.log(result);
+    query = {id : parseInt(req.body.id)};
+    console.log(query);
+    col.updateOne(query,{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, obj) {
+        console.log(obj.result);
     })
-    console.log('Updated successfully');
     res.redirect('/listTasks');
 });
 
+app.post('/manyIncoming', function(req,res) {
+    let count = parseInt(req.body.counter);
+    let dataArray = [];
+    for (let i = 0; i < count; i++) {
+        let newTask = {
+            id:parseInt(Math.round(Math.random()*1000)),
+            taskName:req.body.taskName,
+            assignTo:req.body.assignTo,
+            dueDate:req.body.dueDate,
+            taskStatus:req.body.taskStatus,
+            description:req.body.description
+        }
+        dataArray.push(newTask);
+    }
+    col.insertMany(dataArray);
+    res.redirect('/listTasks');
+})
 
 app.listen(8080);
