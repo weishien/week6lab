@@ -82,7 +82,7 @@ app.post('/incomingTask', function(req,res) {
         id:parseInt(idRandom),
         taskName:req.body.taskName,
         assignTo:req.body.assignTo,
-        dueDate:req.body.dueDate,
+        dueDate: new Date (req.body.dueDate),
         taskStatus:req.body.taskStatus,
         description:req.body.description
     }
@@ -134,7 +134,7 @@ app.post('/manyIncoming', function(req,res) {
             id:parseInt(Math.round(Math.random()*1000)),
             taskName:req.body.taskName,
             assignTo:req.body.assignTo,
-            dueDate:req.body.dueDate,
+            dueDate: new Date (req.body.dueDate),
             taskStatus:req.body.taskStatus,
             description:req.body.description
         }
