@@ -82,7 +82,6 @@ app.post('/incomingTask', function(req,res) {
 // delete data with equivalent ID from database
 app.post('/deleteById', function(req,res) {
     // check id and delete
-    // NEED ATTENTION!
     console.log(req.body.id);
     col.deleteOne({_id : mongodb.ObjectId(req.body.id)},function(err,obj) {
         console.log(obj.result);
@@ -108,6 +107,7 @@ app.post('/updateTask', function(req,res) {
     col.updateOne({query},{$set : {taskStatus:req.body.status}}, {upsert:false},function(err, result) {
         console.log(result);
     })
+    console.log('Updated successfully');
     res.redirect('/listTasks');
 });
 
